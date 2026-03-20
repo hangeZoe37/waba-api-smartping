@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SmartPing WABA API Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --nav:272px;
+  --brand:#6D28D9;
+  --brand-lt:#EDE9FE;
+  --brand-mid:#C4B5FD;
+  --bg:#FFFFFF;
+  --bg2:#F9FAFB;
+  --bg3:#F3F4F6;
+  --border:#E5E7EB;
+  --border2:#D1D5DB;
+  --text:#111827;
+  --text2:#374151;
+  --muted:#6B7280;
+  --muted2:#9CA3AF;
+  --green:#065F46;--gbg:#ECFDF5;--gbd:#A7F3D0;--gtx:#059669;
+  --amber:#92400E;--abg:#FFFBEB;--abd:#FDE68A;--atx:#D97706;
+  --red:#991B1B;--rbg:#FEF2F2;--rbd:#FECACA;--rtx:#DC2626;
+  --blue:#1E3A8A;--bbg:#EFF6FF;--bbd:#BFDBFE;--btx:#2563EB;
+  --code:#1E1B4B;
+  --code-bg:#1E1B4B;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;min-height:100vh;line-height:1.6}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ─── NAV ─── */
+#nav{
+  width:var(--nav);min-width:var(--nav);
+  height:100vh;position:sticky;top:0;
+  background:var(--bg);border-right:1px solid var(--border);
+  overflow-y:auto;display:flex;flex-direction:column;
+  font-size:13px;
+}
+.nav-top{
+  padding:20px 20px 14px;
+  border-bottom:1px solid var(--border);
+}
+.nav-product{
+  font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:2px;
+}
+.nav-title{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.nav-version{
+  display:inline-block;margin-top:5px;
+  font-size:10px;font-weight:600;font-family:var(--mono);
+  background:var(--brand-lt);color:var(--brand);
+  padding:1px 7px;border-radius:99px;
+}
+.nav-search{padding:10px 16px;border-bottom:1px solid var(--border)}
+.nav-search input{
+  width:100%;background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:6px 10px;font-family:var(--sans);
+  font-size:12px;color:var(--text);outline:none;
+}
+.nav-search input:focus{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-lt)}
+.nav-search input::placeholder{color:var(--muted2)}
+.nav-group{
+  padding:14px 0 2px;
+}
+.nav-group-label{
+  padding:0 16px 4px;
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);
+}
+.nav-item{
+  display:flex;align-items:center;gap:7px;
+  padding:5px 16px;cursor:pointer;
+  color:var(--text2);text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all .1s;line-height:1.35;
+}
+.nav-item:hover{background:var(--bg2);color:var(--brand)}
+.nav-item.active{
+  background:var(--brand-lt);color:var(--brand);
+  border-left-color:var(--brand);font-weight:500;
+}
+.nav-badge{
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.03em;
+}
+.nb-get{background:#DCFCE7;color:#166534}
+.nb-post{background:var(--brand-lt);color:var(--brand)}
+.nb-put{background:var(--abg);color:var(--amber)}
+.nav-divider{height:1px;background:var(--border);margin:6px 0}
+
+/* ─── MAIN ─── */
+#main{flex:1;min-width:0;overflow-y:auto}
+
+/* ─── SECTIONS ─── */
+.page{
+  max-width:860px;
+  margin:0 auto;
+  padding:52px 60px 80px;
+  border-bottom:1px solid var(--border);
+}
+.page:last-child{border-bottom:none}
+
+/* ─── TYPOGRAPHY ─── */
+.page-eyebrow{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.eyebrow-method{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:4px;letter-spacing:.04em;
+}
+.em-get{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0}
+.em-post{background:var(--brand-lt);color:var(--brand);border:1px solid var(--brand-mid)}
+.em-put{background:var(--abg);color:var(--amber);border:1px solid var(--abd)}
+.em-del{background:var(--rbg);color:var(--rtx);border:1px solid var(--rbd)}
+.eyebrow-path{
+  font-family:var(--mono);font-size:13px;color:var(--text2);font-weight:500;
+}
+
+h1{font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:8px;line-height:1.25}
+h2{
+  font-size:15px;font-weight:700;color:var(--text);
+  margin:40px 0 10px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  letter-spacing:-.01em;
+}
+h3{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--muted);margin:24px 0 10px;
+}
+p{color:var(--text2);line-height:1.8;font-size:14px;margin-bottom:14px}
+p:last-child{margin-bottom:0}
+p strong{color:var(--text);font-weight:600}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+code{
+  font-family:var(--mono);font-size:12px;
+  background:var(--bg3);color:var(--brand);
+  padding:1px 6px;border-radius:4px;border:1px solid var(--border);
+}
+.lead{
+  font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:20px;
+}
+
+/* ─── CALLOUTS ─── */
+.callout{
+  display:flex;gap:12px;border-radius:8px;padding:13px 16px;
+  margin:18px 0;font-size:13.5px;line-height:1.75;
+}
+.callout-icon{flex-shrink:0;font-size:15px;margin-top:1px}
+.callout-info{background:var(--bbg);border:1px solid var(--bbd);color:#1E3A8A}
+.callout-warn{background:var(--abg);border:1px solid var(--abd);color:#78350F}
+.callout-tip{background:var(--gbg);border:1px solid var(--gbd);color:#064E3B}
+.callout-danger{background:var(--rbg);border:1px solid var(--rbd);color:#7F1D1D}
+.callout-note{background:var(--brand-lt);border:1px solid var(--brand-mid);color:#4C1D95}
+
+/* ─── BASE URL BAR ─── */
+.base-bar{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;margin:14px 0;
+  font-family:var(--mono);font-size:12.5px;color:var(--text2);
+}
+.base-label{
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;background:var(--bg3);
+  border:1px solid var(--border);padding:2px 6px;border-radius:3px;
+}
+.copy-btn{
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  cursor:pointer;padding:2px 8px;border:1px solid var(--border);
+  border-radius:3px;background:white;transition:all .1s;
+}
+.copy-btn:hover{background:var(--brand);color:white;border-color:var(--brand)}
+
+/* ─── ENDPOINT PATH ─── */
+.endpoint-box{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:13px 16px;margin:16px 0;
+}
+.endpoint-method{
+  font-family:var(--mono);font-size:11.5px;font-weight:700;
+  padding:4px 10px;border-radius:5px;flex-shrink:0;letter-spacing:.05em;
+}
+.eb-get{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0}
+.eb-post{background:var(--brand-lt);color:var(--brand);border:1px solid var(--brand-mid)}
+.eb-put{background:var(--abg);color:var(--amber);border:1px solid var(--abd)}
+.endpoint-path{font-family:var(--mono);font-size:13.5px;color:var(--text);font-weight:500;word-break:break-all}
+
+/* ─── PARAMS TABLE ─── */
+.param-block{margin:12px 0 24px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.param-row{
+  display:grid;grid-template-columns:220px 1fr;
+  border-bottom:1px solid var(--border);
+}
+.param-row:last-child{border-bottom:none}
+.param-row:hover{background:var(--bg2)}
+.param-left{
+  padding:13px 16px;border-right:1px solid var(--border);
+  background:var(--bg2);
+}
+.param-name{
+  font-family:var(--mono);font-size:12.5px;color:var(--brand);
+  font-weight:600;display:block;margin-bottom:4px;
+}
+.param-type{
+  font-family:var(--mono);font-size:10.5px;color:var(--muted);display:block;margin-bottom:4px;
+}
+.param-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.badge-req{
+  font-size:9.5px;font-weight:700;color:var(--rtx);
+  background:var(--rbg);border:1px solid var(--rbd);
+  padding:1px 6px;border-radius:3px;letter-spacing:.02em;
+}
+.badge-opt{
+  font-size:9.5px;font-weight:500;color:var(--muted);
+  background:var(--bg3);border:1px solid var(--border);
+  padding:1px 6px;border-radius:3px;
+}
+.badge-dep{
+  font-size:9.5px;font-weight:700;color:var(--amber);
+  background:var(--abg);border:1px solid var(--abd);
+  padding:1px 6px;border-radius:3px;
+}
+.param-right{padding:13px 18px}
+.param-desc{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:6px}
+.param-example{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.param-example::before{content:'Example: ';font-family:var(--sans);font-weight:500;color:var(--muted2);font-size:11px}
+.param-enum{margin-top:6px}
+.enum-label{font-size:11px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.enum-values{display:flex;gap:5px;flex-wrap:wrap}
+.enum-val{
+  font-family:var(--mono);font-size:11px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);padding:1px 7px;border-radius:4px;
+}
+.param-children{
+  margin-top:8px;padding:8px 12px;background:var(--bg3);
+  border-radius:6px;border:1px solid var(--border);
+  font-size:12.5px;color:var(--text2);line-height:1.75;
+}
+.param-children strong{font-weight:600;color:var(--text);font-family:var(--mono);font-size:12px}
+
+/* ─── RESPONSE TABLE ─── */
+.response-block{margin:12px 0 24px}
+.response-row{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+.response-row:last-child{border-bottom:none}
+.response-code{
+  font-family:var(--mono);font-size:13.5px;font-weight:700;
+  flex-shrink:0;width:44px;
+}
+.rc-ok{color:var(--gtx)}.rc-4{color:var(--atx)}.rc-5{color:var(--rtx)}
+.response-desc{font-size:13.5px;color:var(--text2);line-height:1.7}
+
+/* ─── CODE BLOCK ─── */
+.code-wrap{border-radius:8px;overflow:hidden;margin:14px 0;border:1px solid rgba(0,0,0,.08)}
+.code-tabs{display:flex;background:#2D2B55;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.code-tabs::-webkit-scrollbar{height:2px}
+.ctab{
+  padding:9px 16px;font-family:var(--mono);font-size:11px;
+  color:rgba(255,255,255,.4);cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:all .12s;
+}
+.ctab:hover{color:rgba(255,255,255,.7)}
+.ctab.on{color:#C4B5FD;border-bottom-color:#7C3AED}
+.cpanel{display:none;position:relative}.cpanel.on{display:block}
+.cpanel pre{
+  background:#1E1B4B;padding:18px 20px;overflow-x:auto;
+  line-height:1.75;font-family:var(--mono);font-size:12px;color:#DDD6FE;
+  margin:0;
+}
+.cbtn{
+  position:absolute;top:10px;right:12px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.4);font-family:var(--mono);font-size:9.5px;
+  padding:3px 9px;border-radius:4px;cursor:pointer;transition:all .12s;
+}
+.cbtn:hover{background:var(--brand);color:white;border-color:var(--brand)}
+/* single code block, no tabs */
+.code-single{background:#1E1B4B;border-radius:8px;overflow:hidden;margin:14px 0;position:relative}
+.code-single pre{padding:18px 20px;overflow-x:auto;line-height:1.75;font-family:var(--mono);font-size:12px;color:#DDD6FE}
+
+/* syntax */
+.k{color:#93C5FD}.s{color:#86EFAC}.n{color:#C4B5FD}.v{color:#FCA5A5}
+.cm{color:#4C4580;font-style:italic}.u{color:#F9A8D4}.o{color:#FCD34D}
+
+/* ─── OVERVIEW CARDS ─── */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{
+  border:1px solid var(--border);border-radius:8px;padding:18px 20px;
+  cursor:pointer;transition:all .15s;background:white;
+}
+.card:hover{border-color:var(--brand-mid);box-shadow:0 2px 12px rgba(109,40,217,.07)}
+.card-icon{font-size:18px;margin-bottom:8px}
+.card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ─── INDEX TABLE ─── */
+.idx{width:100%;border-collapse:collapse;margin:8px 0}
+.idx tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.idx tr:last-child{border-bottom:none}
+.idx tr:hover td{background:var(--bg2)}
+.idx td{padding:10px 12px;vertical-align:middle}
+.idx td:first-child{width:60px}
+.idx-path{font-family:var(--mono);font-size:12px;color:var(--text)}
+.idx-desc{color:var(--muted);font-size:13px;padding-left:8px}
+
+/* ─── STEPS ─── */
+.steps{margin:20px 0}
+.step{display:flex;gap:16px;margin-bottom:28px;position:relative}
+.step:not(:last-child)::before{
+  content:'';position:absolute;left:16px;top:34px;width:1px;
+  bottom:-28px;background:var(--border2);
+}
+.step-n{
+  width:33px;height:33px;background:var(--brand);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:white;flex-shrink:0;font-family:var(--mono);
+}
+.step-body{flex:1;padding-top:5px}
+.step-title{font-size:14.5px;font-weight:600;color:var(--text);margin-bottom:4px}
+.step-desc{font-size:13.5px;color:var(--muted);line-height:1.75}
+
+/* ─── LIFECYCLE ─── */
+.lc{margin:16px 0 28px}
+.lc-item{display:flex;gap:16px;align-items:stretch}
+.lc-gutter{display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0}
+.lc-dot{
+  width:12px;height:12px;border-radius:50%;border:2px solid var(--brand);
+  background:white;flex-shrink:0;margin-top:6px;
+}
+.lc-line{flex:1;width:2px;background:var(--border2);margin:0 auto}
+.lc-item:last-child .lc-line{display:none}
+.lc-content{padding:0 0 22px;flex:1}
+.lc-state{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
+.lc-how{font-size:12px;color:var(--muted);margin-top:2px;font-style:italic}
+.lc-desc{font-size:13.5px;color:var(--text2);margin-top:5px;line-height:1.7}
+
+/* ─── STATUS BADGES ─── */
+.stat-row{display:flex;gap:12px;margin:18px 0}
+.stat{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.stat-num{font-size:24px;font-weight:700;color:var(--brand);font-family:var(--mono);letter-spacing:-.02em}
+.stat-label{font-size:12px;color:var(--muted);margin-top:3px}
+
+.section-divider{height:1px;background:var(--border);margin:36px 0}
+
+/* ─── INLINE TABLE ─── */
+.table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0 20px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl thead tr{background:var(--bg2)}
+.tbl th{
+  text-align:left;padding:9px 14px;
+  font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);
+}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text2);line-height:1.65}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg2)}
+.tbl td:first-child code{color:var(--text);background:var(--bg3)}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-top">
+    <div class="nav-product">SmartPing</div>
+    <div class="nav-title">WABA API</div>
+    <span class="nav-version">v1.0.0 · OAS 3.0</span>
+  </div>
+  <div class="nav-search">
+    <input type="text" placeholder="Search…" oninput="filterNav(this.value)"/>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Getting Started</div>
+    <a class="nav-item active" href="#overview">Overview</a>
+    <a class="nav-item" href="#quickstart">Quickstart</a>
+    <a class="nav-item" href="#authentication">Authentication</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Auth</div>
+    <a class="nav-item" href="#ep-creds"><span class="nav-badge nb-get">GET</span>Get Account Details</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Templates</div>
+    <a class="nav-item" href="#ep-tpl-create"><span class="nav-badge nb-post">POST</span>Create Template</a>
+    <a class="nav-item" href="#ep-tpl-list"><span class="nav-badge nb-get">GET</span>Fetch Templates</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Campaign Manager</div>
+    <a class="nav-item" href="#ep-save"><span class="nav-badge nb-post">POST</span>Save Campaign</a>
+    <a class="nav-item" href="#ep-send"><span class="nav-badge nb-post">POST</span>Send Campaign</a>
+    <a class="nav-item" href="#ep-single"><span class="nav-badge nb-post">POST</span>Send Single by Template</a>
+    <a class="nav-item" href="#ep-bulk"><span class="nav-badge nb-post">POST</span>Send Bulk by Template</a>
+    <a class="nav-item" href="#ep-update"><span class="nav-badge nb-put">PUT</span>Update Campaign</a>
+    <a class="nav-item" href="#ep-list"><span class="nav-badge nb-get">GET</span>List All Campaigns</a>
+    <a class="nav-item" href="#ep-getbyid"><span class="nav-badge nb-get">GET</span>Get Campaign by ID</a>
+    <a class="nav-item" href="#ep-track"><span class="nav-badge nb-get">GET</span>Track by Request ID</a>
+    <a class="nav-item" href="#ep-health"><span class="nav-badge nb-get">GET</span>Health Check</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Analytics</div>
+    <a class="nav-item" href="#ep-a-msg"><span class="nav-badge nb-get">GET</span>Message Status</a>
+    <a class="nav-item" href="#ep-a-camp"><span class="nav-badge nb-get">GET</span>Campaign Analytics</a>
+    <a class="nav-item" href="#ep-a-all"><span class="nav-badge nb-get">GET</span>Metrics with Date Range</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Upload &amp; Consent</div>
+    <a class="nav-item" href="#ep-upload"><span class="nav-badge nb-post">POST</span>Upload File</a>
+    <a class="nav-item" href="#ep-consent"><span class="nav-badge nb-post">POST</span>Bulk Optin / Blocklist</a>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Reference</div>
+    <a class="nav-item" href="#lifecycle">Campaign Lifecycle</a>
+    <a class="nav-item" href="#errors">Error Codes</a>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main id="main">
+
+<!-- ══════════════════ OVERVIEW ══════════════════ -->
+<section class="page" id="overview">
+  <h1>WhatsApp Business API</h1>
+  <p class="lead">The SmartPing WABA API lets you create message templates, run bulk campaigns, send individual transactional messages, track delivery, upload files, and manage consent — all over a single REST API. This reference covers every endpoint, every parameter, and the exact behaviour you can expect.</p>
+
+  <div class="base-bar">
+    <span class="base-label">Base URL</span>
+    https://ocmpapi.sparc.smartping.io/backend/api
+    <button class="copy-btn" onclick="copyText('https://ocmpapi.sparc.smartping.io/backend/api',this)">copy</button>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <span>Every request requires an <code>Authorization: Bearer &lt;token&gt;</code> header — except <code>GET /campaign/health</code>. Tokens expire after <strong>3,600 seconds (1 hour)</strong>. See <a href="#authentication">Authentication</a> for how to handle expiry.</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">17</div><div class="stat-label">Total endpoints</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">API groups</div></div>
+    <div class="stat"><div class="stat-num">REST</div><div class="stat-label">Protocol</div></div>
+    <div class="stat"><div class="stat-num">JSON</div><div class="stat-label">Request / Response</div></div>
+  </div>
+
+  <h2>What you can build</h2>
+  <div class="card-grid">
+    <div class="card" onclick="jump('ep-save')">
+      <div class="card-icon">📣</div>
+      <div class="card-title">Bulk WhatsApp Campaigns</div>
+      <div class="card-desc">Upload a CSV of recipients, pair it with an approved template, and deliver personalised messages to thousands of users with one API call.</div>
+    </div>
+    <div class="card" onclick="jump('ep-single')">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Transactional Single Sends</div>
+      <div class="card-desc">Trigger real-time messages to individual users — order confirmations, OTPs, appointment reminders — directly from your server.</div>
+    </div>
+    <div class="card" onclick="jump('ep-tpl-create')">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Template Management</div>
+      <div class="card-desc">Create and submit message templates for Meta approval. Supports media headers, dynamic variables, and quick-reply buttons.</div>
+    </div>
+    <div class="card" onclick="jump('ep-a-all')">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Delivery Analytics</div>
+      <div class="card-desc">Track sent, delivered, and read rates per message or campaign with date-range filtering for reporting dashboards.</div>
+    </div>
+  </div>
+
+  <h2>Endpoint Index</h2>
+
+  <h3>Auth — 1 endpoint</h3>
+  <div class="table-wrap"><table class="idx">
+    <tr onclick="jump('ep-creds')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/licenses/swagger/credentialsdata</td><td class="idx-desc">Return account credentials and IDs</td></tr>
+  </table></div>
+
+  <h3>Templates — 2 endpoints</h3>
+  <div class="table-wrap"><table class="idx">
+    <tr onclick="jump('ep-tpl-create')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/templates/</td><td class="idx-desc">Submit a new message template for Meta approval</td></tr>
+    <tr onclick="jump('ep-tpl-list')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/templates/{account_id}/{bsp_id}/{waba_number}</td><td class="idx-desc">Fetch all templates for a WABA number</td></tr>
+  </table></div>
+
+  <h3>Campaign Manager — 9 endpoints</h3>
+  <div class="table-wrap"><table class="idx">
+    <tr onclick="jump('ep-save')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/campaign/save-campaign</td><td class="idx-desc">Create and queue a bulk campaign</td></tr>
+    <tr onclick="jump('ep-send')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/campaign/send-campaign</td><td class="idx-desc">Dispatch a preprocessed campaign</td></tr>
+    <tr onclick="jump('ep-single')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/campaign/send-single-campaign-by-template-name</td><td class="idx-desc">Send one message to one recipient (API-only)</td></tr>
+    <tr onclick="jump('ep-bulk')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/campaign/send-bulk-campaign-by-template-name</td><td class="idx-desc">Send bulk by template name without the save flow</td></tr>
+    <tr onclick="jump('ep-update')"><td><span class="endpoint-method eb-put">PUT</span></td><td class="idx-path">/campaign/update-campaign</td><td class="idx-desc">Update an existing campaign's fields</td></tr>
+    <tr onclick="jump('ep-list')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/campaign/{account_id}/{channel}/{bsp_id}/{waba_number}</td><td class="idx-desc">List all campaigns for a WABA</td></tr>
+    <tr onclick="jump('ep-getbyid')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/campaign/{campaign_id}</td><td class="idx-desc">Get a campaign by its UUID</td></tr>
+    <tr onclick="jump('ep-track')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/campaign/track-request/{request_id}</td><td class="idx-desc">Track a send operation by request ID</td></tr>
+    <tr onclick="jump('ep-health')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/campaign/health</td><td class="idx-desc">Service health check — no auth required</td></tr>
+  </table></div>
+
+  <h3>Analytics — 3 endpoints</h3>
+  <div class="table-wrap"><table class="idx">
+    <tr onclick="jump('ep-a-msg')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/analytics/view-analytics-by-message-id/{message_id}</td><td class="idx-desc">Fetch delivery status for a single message</td></tr>
+    <tr onclick="jump('ep-a-camp')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/analytics/view-analytics/{account_id}</td><td class="idx-desc">Fetch analytics for campaigns under an account</td></tr>
+    <tr onclick="jump('ep-a-all')"><td><span class="endpoint-method eb-get">GET</span></td><td class="idx-path">/analytics/view-all-metrics-analytics</td><td class="idx-desc">Aggregate metrics with date-range filter</td></tr>
+  </table></div>
+
+  <h3>Upload &amp; Consent — 2 endpoints</h3>
+  <div class="table-wrap"><table class="idx">
+    <tr onclick="jump('ep-upload')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/drive/upload</td><td class="idx-desc">Upload a file and get a hosted URL back</td></tr>
+    <tr onclick="jump('ep-consent')"><td><span class="endpoint-method eb-post">POST</span></td><td class="idx-path">/consents/consent</td><td class="idx-desc">Register opt-ins or block numbers in bulk</td></tr>
+  </table></div>
+</section>
+
+<!-- ══════════════════ QUICKSTART ══════════════════ -->
+<section class="page" id="quickstart">
+  <h1>Quickstart — Send Your First Bulk Campaign</h1>
+  <p class="lead">This guide walks you through the complete bulk campaign flow from scratch. You'll need your <code>account_id</code>, <code>bsp_id</code>, and <code>waba_number</code> — all available in the OCMP dashboard under <strong>Settings → Account</strong>.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <span>The bulk campaign flow has exactly three steps: <strong>Upload your CSV → Save the campaign → Send it.</strong> The save step triggers background preprocessing (validation, deduplication, blocked-number removal). You then explicitly trigger dispatch when ready.</span>
+  </div>
+
+  <h2>Step-by-step</h2>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-body">
+        <div class="step-title">Verify your credentials</div>
+        <div class="step-desc">Call the credentials endpoint to confirm your account is active and retrieve your identifiers. You'll use <code>account_id</code>, <code>bsp_id</code>, and <code>waba_number</code> in nearly every subsequent request.</div>
+        <div class="code-single" style="margin-top:12px">
+          <button class="cbtn" onclick="copySingle(this)">copy</button>
+          <pre>curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/licenses/swagger/credentialsdata'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <div class="step-title">Confirm your template is approved</div>
+        <div class="step-desc">You can only send campaigns using templates with <code>status: "APPROVED"</code>. List your templates and save the <strong>full template object</strong> — you'll pass the entire object (not just the ID) as <code>template_data</code> when creating a campaign.</div>
+        <div class="code-single" style="margin-top:12px">
+          <button class="cbtn" onclick="copySingle(this)">copy</button>
+          <pre>curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/templates/{account_id}/{bsp_id}/{waba_number}?page=1&size=50'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span>
+
+<span class="cm"># Filter the response for status === "APPROVED" before proceeding</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-body">
+        <div class="step-title">Upload your recipient CSV</div>
+        <div class="step-desc">Upload a CSV file where each row is a phone number in full international format without the <code>+</code> prefix (e.g. <code>919876543210</code>). The response returns a <code>url</code> — save this as your <code>bulk_upload_url</code>.</div>
+        <div class="callout callout-warn" style="margin-top:10px">
+          <span class="callout-icon">⚠</span>
+          <span>Phone numbers must include the country code. Numbers that are malformed or already blocklisted are silently dropped during preprocessing — they will not cause the campaign to fail, but they will not receive messages.</span>
+        </div>
+        <div class="code-single" style="margin-top:12px">
+          <button class="cbtn" onclick="copySingle(this)">copy</button>
+          <pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/drive/upload'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span> \
+  -F <span class="s">'file=@/path/to/recipients.csv'</span> \
+  -F <span class="s">'account_id=&lt;account_id&gt;'</span> \
+  -F <span class="s">'channel=waba'</span> \
+  -F <span class="s">'created_by=My App'</span>
+
+<span class="cm"># Response — save the "url" field</span>
+{
+  <span class="n">"url"</span>: <span class="s">"https://ocmp.smartping.io/backend/api/drive/uploads/&lt;account_id&gt;/&lt;filename&gt;.csv"</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-body">
+        <div class="step-title">Save the campaign</div>
+        <div class="step-desc">Create the campaign by combining your approved template object, CSV URL, and account details. Setting <code>is_drafted: false</code> immediately queues preprocessing. The response returns the <code>campaign_id</code> you'll need for the next steps.</div>
+        <div class="callout callout-warn" style="margin-top:10px">
+          <span class="callout-icon">⚠</span>
+          <span>Pass the <strong>complete template object</strong> from <code>GET /templates</code> as <code>template_data</code> — not just the template ID. The campaign manager needs the full object including <code>bsp_metadata</code> and <code>bsp_template_id</code>. Passing an incomplete object silently fails preprocessing.</span>
+        </div>
+        <div class="code-single" style="margin-top:12px">
+          <button class="cbtn" onclick="copySingle(this)">copy</button>
+          <pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/save-campaign'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "&lt;account_id&gt;",
+    "channel": "waba",
+    "waba_number": "&lt;waba_number&gt;",
+    "bsp_id": "&lt;bsp_id&gt;",
+    "campaign_name": "My First Campaign",
+    "created_by": "My App",
+    "template_data": &lt;full-template-object-from-step-2&gt;,
+    "bulk_upload_url": "&lt;csv-url-from-step-3&gt;",
+    "is_bulk_campaign": true,
+    "is_drafted": false
+  }'</span>
+
+<span class="cm"># Response — save the campaign "id"</span>
+{ <span class="n">"id"</span>: <span class="s">"9af51935-cc3b-4bc0-8bc6-4a7bc86827c2"</span> }</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-body">
+        <div class="step-title">Poll for VALIDATED status, then send</div>
+        <div class="step-desc">Preprocessing typically takes 30 seconds to 5 minutes. Poll <code>GET /campaign/{campaign_id}</code> until <code>status</code> equals <code>VALIDATED</code>. Then call <code>send-campaign</code> to dispatch.</div>
+        <div class="callout callout-danger" style="margin-top:10px">
+          <span class="callout-icon">🚫</span>
+          <span><strong>This cannot be undone.</strong> Once you call send-campaign, messages begin dispatching immediately to Meta's WhatsApp API. Always test with a small list before sending to your full audience.</span>
+        </div>
+        <div class="code-single" style="margin-top:12px">
+          <button class="cbtn" onclick="copySingle(this)">copy</button>
+          <pre><span class="cm"># 1. Poll until VALIDATED</span>
+curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/&lt;campaign_id&gt;'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span>
+
+<span class="cm"># 2. When status is "VALIDATED", trigger send</span>
+curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-campaign'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;your-token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "id": "&lt;campaign_id&gt;",
+    "bulk_upload_url": "&lt;csv-url-from-step-3&gt;",
+    "is_send_to_non_consent_recipients": false
+  }'</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">6</div>
+      <div class="step-body">
+        <div class="step-title">Monitor delivery</div>
+        <div class="step-desc">Use the analytics endpoints to track delivery rates. For individual message status, use <code>GET /analytics/view-analytics-by-message-id/{message_id}</code>. For campaign-level aggregates, use <code>GET /analytics/view-analytics/{account_id}</code>.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ AUTHENTICATION ══════════════════ -->
+<section class="page" id="authentication">
+  <h1>Authentication</h1>
+  <p class="lead">The WABA API uses Bearer token authentication. Every request — except the health check — must include a valid JWT in the <code>Authorization</code> header.</p>
+
+  <h2>Sending an authenticated request</h2>
+  <p>Include the token as a header on every request:</p>
+  <div class="code-single">
+    <pre>Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9…</pre>
+  </div>
+
+  <h2>Token expiry</h2>
+  <p>Tokens expire after <strong>3,600 seconds (1 hour)</strong>. An expired token returns <code>401 Unauthorized</code>. In long-running processes — background workers, scheduled jobs, server applications — implement automatic re-authentication by catching <code>401</code> responses, refreshing the token, and retrying the original request.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠</span>
+    <span>Do not cache a token without tracking its expiry time. An approach like storing the token alongside its <code>expiry = Date.now() + 3_600_000</code> and proactively refreshing before expiry avoids failed requests in production.</span>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">Node.js — auto-refresh</div>
+      <div class="ctab" onclick="ct(this)">Python — auto-refresh</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">let</span> token = <span class="k">null</span>;
+<span class="k">let</span> tokenExpiry = <span class="v">0</span>;
+
+<span class="k">async function</span> <span class="n">getToken</span>() {
+  <span class="k">if</span> (Date.now() &lt; tokenExpiry) <span class="k">return</span> token;
+  <span class="cm">// replace with your auth mechanism</span>
+  <span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">'…/licenses/swagger/credentialsdata'</span>, {
+    headers: { Authorization: <span class="s">`Basic <span class="k">${btoa('user:pass')}</span>`</span> }
+  });
+  token = (await res.json()).access_token;
+  tokenExpiry = Date.now() + <span class="v">3_500_000</span>; <span class="cm">// refresh 100s before expiry</span>
+  <span class="k">return</span> token;
+}
+
+<span class="k">async function</span> <span class="n">apiFetch</span>(url, opts = {}) {
+  <span class="k">const</span> t = <span class="k">await</span> getToken();
+  <span class="k">return</span> fetch(url, {
+    ...opts,
+    headers: { Authorization: <span class="s">`Bearer <span class="k">${t}</span>`</span>, <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span>, ...opts.headers }
+  });
+}</pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">import</span> time, requests
+
+_token = <span class="k">None</span>
+_expiry = <span class="v">0</span>
+
+<span class="k">def</span> <span class="n">get_token</span>():
+    <span class="k">global</span> _token, _expiry
+    <span class="k">if</span> time.time() &lt; _expiry:
+        <span class="k">return</span> _token
+    r = requests.get(<span class="s">'…/licenses/swagger/credentialsdata'</span>,
+                     auth=(<span class="s">'user'</span>, <span class="s">'pass'</span>))
+    _token = r.json()[<span class="s">'access_token'</span>]
+    _expiry = time.time() + <span class="v">3500</span>
+    <span class="k">return</span> _token
+
+<span class="k">def</span> <span class="n">api</span>(method, path, **kwargs):
+    <span class="k">return</span> requests.request(method,
+        <span class="s">f'https://ocmpapi.sparc.smartping.io/backend/api{path}'</span>,
+        headers={<span class="s">'Authorization'</span>: f<span class="s">'Bearer {get_token()}'</span>},
+        **kwargs)</pre></div>
+  </div>
+
+  <h2>Common authentication errors</h2>
+  <div class="table-wrap"><table class="tbl">
+    <thead><tr><th>Code</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td><code>401</code></td><td>Token expired</td><td>Re-authenticate and retry the request</td></tr>
+      <tr><td><code>401</code></td><td>Token missing</td><td>Ensure the <code>Authorization: Bearer …</code> header is present</td></tr>
+      <tr><td><code>401</code></td><td>Extra whitespace in header</td><td>Trim the token string — no leading or trailing spaces</td></tr>
+      <tr><td><code>404</code></td><td>Wrong account scope</td><td>A resource ID from another account returns 404 — confirm you're using the matching token</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ══════════════════ GET CREDENTIALS ══════════════════ -->
+<section class="page" id="ep-creds">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-get">GET</span>
+    <span class="eyebrow-path">/licenses/swagger/credentialsdata</span>
+  </div>
+  <h1>Get Account Details</h1>
+  <p class="lead">Returns the authenticated account's credential configuration — including <code>account_id</code>, <code>bsp_id</code>, and active WABA numbers. These three identifiers are required by almost every other endpoint in the API.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-get">GET</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/licenses/swagger/credentialsdata</span>
+  </div>
+
+  <p>No parameters. No request body. Call this first when integrating to confirm connectivity and to capture the IDs you'll pass into subsequent calls.</p>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Returns the account's credentials as JSON, including <code>account_id</code>, <code>bsp_id</code>, <code>waba_numbers</code>, and account status.</span></div>
+    <div class="response-row"><span class="response-code rc-4">401</span><span class="response-desc">Token missing or expired. Re-authenticate and retry.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL</div>
+      <div class="ctab" onclick="ct(this)">Response 200</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/licenses/swagger/credentialsdata'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"account_id"</span>: <span class="s">"2ad53edc-7f14-4a23-b2dc-381fa3a21ead"</span>,
+  <span class="n">"account_name"</span>: <span class="s">"Acme Corp"</span>,
+  <span class="n">"bsp_id"</span>: <span class="s">"2ef083c7-1d57-4722-9dc9-a183634946cd"</span>,
+  <span class="n">"status"</span>: <span class="s">"active"</span>,
+  <span class="n">"waba_numbers"</span>: [<span class="s">"919912341572"</span>]
+}</pre></div>
+  </div>
+</section>
+
+<!-- ══════════════════ CREATE TEMPLATE ══════════════════ -->
+<section class="page" id="ep-tpl-create">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-post">POST</span>
+    <span class="eyebrow-path">/templates/</span>
+  </div>
+  <h1>Create Template</h1>
+  <p class="lead">Submit a new WhatsApp message template to SmartPing, which forwards it to Meta for approval. A template defines the fixed structure of a message — including the header, body copy, footer, and any interactive buttons. Templates with dynamic content use numbered placeholders like <code>{{1}}</code>, <code>{{2}}</code> that get substituted at send time.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-post">POST</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/templates/</span>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">ℹ</span>
+    <span>Meta approval typically takes a few minutes but can take up to 24 hours. After submitting, poll <code>GET /templates</code> and wait for <code>status: "APPROVED"</code> before using the template in a campaign. Template names must be unique per WABA number.</span>
+  </div>
+
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">account_id</span>
+        <span class="param-type">string · uuid</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">Your OCMP account UUID. Available in the dashboard under Settings → Account.</div>
+        <div class="param-example">2ad53edc-7f14-4a23-b2dc-381fa3a21ead</div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">bsp_id</span>
+        <span class="param-type">string · uuid</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">Your Business Service Provider UUID. This identifies the WhatsApp BSP your account is connected through.</div>
+        <div class="param-example">2ef083c7-1d57-4722-9dc9-a183634946cd</div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">waba_number</span>
+        <span class="param-type">string</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">The WABA phone number this template belongs to, including country code, without the <code>+</code> prefix.</div>
+        <div class="param-example">919912341572</div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">template_name</span>
+        <span class="param-type">string</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">A unique identifier for this template. Must be lowercase and contain only letters, numbers, and underscores. Names are unique per WABA — once taken (even if the template is later rejected), the name cannot be reused.</div>
+        <div class="param-example">order_shipped_v1</div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">languages</span>
+        <span class="param-type">string[]</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">ISO 639-1 language codes for this template. A separate template record is created for each language. Currently one language per submission is the norm.</div>
+        <div class="param-example">["en"]</div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">category</span>
+        <span class="param-type">enum · string</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">The Meta template category. Determines what kind of messages you can send and the associated policies.</div>
+        <div class="param-enum">
+          <div class="enum-label">Allowed values</div>
+          <div class="enum-values">
+            <span class="enum-val">MARKETING</span>
+            <span class="enum-val">UTILITY</span>
+            <span class="enum-val">AUTHENTICATION</span>
+          </div>
+        </div>
+        <div class="param-children" style="margin-top:8px">
+          <strong>MARKETING</strong> — promotional content, offers, announcements. Requires explicit opt-in.<br>
+          <strong>UTILITY</strong> — transactional updates tied to a user action (e.g. order confirmation, shipping update). Lighter restrictions.<br>
+          <strong>AUTHENTICATION</strong> — OTP and verification messages. Tightest restrictions, cannot contain media.
+        </div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">type</span>
+        <span class="param-type">enum · string</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">Controls whether the template header is text or a media file.</div>
+        <div class="param-enum">
+          <div class="enum-label">Allowed values</div>
+          <div class="enum-values"><span class="enum-val">Text</span><span class="enum-val">Media</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">content</span>
+        <span class="param-type">object</span>
+        <div class="param-badges"><span class="badge-req">required</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc">The template's message structure. Contains four child objects described below.</div>
+        <div class="param-children">
+          <strong>content.header</strong> — <span style="color:var(--muted)">object</span><br>
+          &nbsp;&nbsp;<strong>header_type</strong>: <code>"text"</code> or <code>"media"</code><br>
+          &nbsp;&nbsp;<strong>data</strong>: array containing <code>{type, text}</code> for text headers or <code>{type, url}</code> for media headers<br><br>
+          <strong>content.body</strong> — <span style="color:var(--muted)">object, required</span><br>
+          &nbsp;&nbsp;<strong>text</strong>: main message copy. Use <code>{{1}}</code>, <code>{{2}}</code> … for dynamic placeholders<br><br>
+          <strong>content.footer</strong> — <span style="color:var(--muted)">object, optional</span><br>
+          &nbsp;&nbsp;<strong>text</strong>: footer line (appears greyed below body). Cannot contain variables<br><br>
+          <strong>content.button_details</strong> — <span style="color:var(--muted)">object, optional</span><br>
+          &nbsp;&nbsp;<strong>type</strong>: <code>"quick_reply"</code> or <code>"call_to_action"</code><br>
+          &nbsp;&nbsp;<strong>buttons</strong>: array of <code>{button_text}</code> objects. Maximum 3 quick-reply buttons
+        </div>
+      </div>
+    </div>
+
+    <div class="param-row">
+      <div class="param-left">
+        <span class="param-name">is_drafted</span>
+        <span class="param-type">boolean</span>
+        <div class="param-badges"><span class="badge-opt">optional</span></div>
+      </div>
+      <div class="param-right">
+        <div class="param-desc"><code>false</code> (default) — submit to Meta for approval immediately. <code>true</code> — save the template locally without submitting. Useful for reviewing before committing.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Template submitted. Returns the template <code>id</code> and initial <code>status: "PENDING"</code>. Poll <code>GET /templates</code> to track approval.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Invalid fields. Common causes: <code>template_name</code> contains invalid characters, <code>category</code> is not a valid value, or <code>content.body.text</code> is missing.</span></div>
+    <div class="response-row"><span class="response-code rc-4">409</span><span class="response-desc">A template with this name already exists for this WABA number. Template names cannot be reused.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL · Media template</div>
+      <div class="ctab" onclick="ct(this)">cURL · Text template</div>
+      <div class="ctab" onclick="ct(this)">Node.js</div>
+      <div class="ctab" onclick="ct(this)">Python</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/templates/'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "2ad53edc-7f14-4a23-b2dc-381fa3a21ead",
+    "bsp_id": "2ef083c7-1d57-4722-9dc9-a183634946cd",
+    "waba_number": "919912341572",
+    "template_name": "flash_sale_banner_v1",
+    "languages": ["en"],
+    "category": "MARKETING",
+    "type": "Media",
+    "is_drafted": false,
+    "content": {
+      "header": {
+        "header_type": "media",
+        "data": [{ "type": "image", "url": "https://cdn.example.com/banner.png" }]
+      },
+      "body": {
+        "text": "Hi {{1}}, our flash sale ends in {{2}} hours. Grab your deal!"
+      },
+      "footer": { "text": "Reply STOP to opt out" },
+      "button_details": {
+        "type": "quick_reply",
+        "buttons": [
+          { "button_text": "Shop Now" },
+          { "button_text": "Remind Me Later" }
+        ]
+      }
+    }
+  }'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/templates/'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "2ad53edc-7f14-4a23-b2dc-381fa3a21ead",
+    "bsp_id": "2ef083c7-1d57-4722-9dc9-a183634946cd",
+    "waba_number": "919912341572",
+    "template_name": "order_shipped_v1",
+    "languages": ["en"],
+    "category": "UTILITY",
+    "type": "Text",
+    "is_drafted": false,
+    "content": {
+      "header": {
+        "header_type": "text",
+        "data": [{ "type": "text", "text": "Order Shipped" }]
+      },
+      "body": {
+        "text": "Hi {{1}}, your order {{2}} has shipped and will arrive by {{3}}."
+      },
+      "footer": { "text": "Reply STOP to opt out" }
+    }
+  }'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">const</span> res = <span class="k">await</span> fetch(
+  <span class="s">'https://ocmpapi.sparc.smartping.io/backend/api/templates/'</span>,
+  {
+    method: <span class="s">'POST'</span>,
+    headers: {
+      Authorization: <span class="s">`Bearer <span class="k">${token}</span>`</span>,
+      <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span>
+    },
+    body: JSON.stringify({
+      account_id: <span class="s">'2ad53edc-…'</span>,
+      bsp_id: <span class="s">'2ef083c7-…'</span>,
+      waba_number: <span class="s">'919912341572'</span>,
+      template_name: <span class="s">'order_shipped_v1'</span>,
+      languages: [<span class="s">'en'</span>],
+      category: <span class="s">'UTILITY'</span>,
+      type: <span class="s">'Text'</span>,
+      content: {
+        header: { header_type: <span class="s">'text'</span>, data: [{ type: <span class="s">'text'</span>, text: <span class="s">'Order Shipped'</span> }] },
+        body:   { text: <span class="s">'Hi {{1}}, your order {{2}} has shipped.'</span> },
+        footer: { text: <span class="s">'Reply STOP to opt out'</span> }
+      }
+    })
+  }
+);
+<span class="k">const</span> { id, status } = <span class="k">await</span> res.json();
+<span class="cm">// status is "PENDING" — poll GET /templates until "APPROVED"</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>import requests
+
+r = requests.post(
+    <span class="s">'https://ocmpapi.sparc.smartping.io/backend/api/templates/'</span>,
+    headers={<span class="s">'Authorization'</span>: f<span class="s">'Bearer {token}'</span>},
+    json={
+        <span class="s">'account_id'</span>: <span class="s">'2ad53edc-…'</span>,
+        <span class="s">'bsp_id'</span>: <span class="s">'2ef083c7-…'</span>,
+        <span class="s">'waba_number'</span>: <span class="s">'919912341572'</span>,
+        <span class="s">'template_name'</span>: <span class="s">'order_shipped_v1'</span>,
+        <span class="s">'languages'</span>: [<span class="s">'en'</span>],
+        <span class="s">'category'</span>: <span class="s">'UTILITY'</span>,
+        <span class="s">'type'</span>: <span class="s">'Text'</span>,
+        <span class="s">'content'</span>: {
+            <span class="s">'body'</span>: {<span class="s">'text'</span>: <span class="s">'Hi {{1}}, your order {{2}} has shipped.'</span>}
+        }
+    }
+)
+template_id = r.json()[<span class="s">'id'</span>]</pre></div>
+  </div>
+</section>
+
+<!-- ══════════════════ FETCH TEMPLATES ══════════════════ -->
+<section class="page" id="ep-tpl-list">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-get">GET</span>
+    <span class="eyebrow-path">/templates/{account_id}/{bsp_id}/{waba_number}</span>
+  </div>
+  <h1>Fetch Templates</h1>
+  <p class="lead">Returns a paginated list of all WhatsApp templates for the specified WABA number. The full template object returned by this endpoint is required as the <code>template_data</code> field when saving a campaign — you cannot pass just a template ID.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-get">GET</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/templates/{account_id}/{bsp_id}/{waba_number}</span>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠</span>
+    <span>Always filter on <code>status === "APPROVED"</code> before using a template in a campaign. Templates in <code>PENDING</code> or <code>REJECTED</code> status will fail silently during campaign preprocessing.</span>
+  </div>
+
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your OCMP account UUID.</div><div class="param-example">da5a9881-f858-49a5-ad3f-96d1e620f91d</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">bsp_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your BSP UUID.</div><div class="param-example">3677ec2e-4f1a-4683-bb0a-d518ae8c5236</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">WABA phone number with country code, without <code>+</code>.</div><div class="param-example">919912341590</div></div>
+    </div>
+  </div>
+
+  <h3>Query parameters</h3>
+  <div class="param-block">
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">page</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Page number for pagination. Starts at 1. Default: <code>1</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">size</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Number of results per page. Default: <code>10</code>. Use a larger value (e.g. 50) when looking for a specific template.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">start_date</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Filter templates created on or after this date.</div><div class="param-example">2024-5-1</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">end_date</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Filter templates created on or before this date. Format: <code>YYYY-M-D</code>.</div><div class="param-example">2024-5-20</div></div>
+    </div>
+  </div>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Paginated array of template objects. Each object includes full <code>content</code>, <code>bsp_metadata</code>, and <code>bsp_template_id</code> — all required when passing as <code>template_data</code> to save-campaign.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">No templates found. Verify the path parameters exactly match your account's values.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL</div>
+      <div class="ctab" onclick="ct(this)">Node.js</div>
+      <div class="ctab" onclick="ct(this)">Response 200</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/templates/da5a9881-.../3677ec2e-.../919912341590?page=1&size=50'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">const</span> res = <span class="k">await</span> fetch(
+  <span class="s">`…/templates/<span class="k">${accountId}</span>/<span class="k">${bspId}</span>/<span class="k">${wabaNumber}</span>?size=50`</span>,
+  { headers: { Authorization: <span class="s">`Bearer <span class="k">${token}</span>`</span> } }
+);
+<span class="k">const</span> { templates } = <span class="k">await</span> res.json();
+<span class="k">const</span> approved = templates.filter(t => t.status === <span class="s">'APPROVED'</span>);</pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"templates"</span>: [{
+    <span class="n">"id"</span>: <span class="s">"77aa95fc-0c8c-4d06-befb-156f6bca3c78"</span>,
+    <span class="n">"template_name"</span>: <span class="s">"order_shipped_v1"</span>,
+    <span class="n">"category"</span>: <span class="s">"UTILITY"</span>,
+    <span class="n">"type"</span>: <span class="s">"Text"</span>,
+    <span class="n">"status"</span>: <span class="s">"APPROVED"</span>,
+    <span class="n">"languages"</span>: <span class="s">"[\"en\"]"</span>,
+    <span class="n">"content"</span>: { <span class="cm">/* full content object */</span> },
+    <span class="n">"bsp_template_id"</span>: <span class="s">"470114598911687"</span>,
+    <span class="n">"bsp_metadata"</span>: <span class="s">"{\"id\":\"435711037685804\",\"status\":\"APPROVED\",…}"</span>,
+    <span class="n">"created_at"</span>: <span class="s">"2024-05-16T10:18:43.000Z"</span>
+  }],
+  <span class="n">"total"</span>: <span class="v">14</span>,
+  <span class="n">"page"</span>: <span class="v">1</span>
+}</pre></div>
+  </div>
+</section>
+
+<!-- ══════════════════ SAVE CAMPAIGN ══════════════════ -->
+<section class="page" id="ep-save">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-post">POST</span>
+    <span class="eyebrow-path">/campaign/save-campaign</span>
+  </div>
+  <h1>Save Campaign</h1>
+  <p class="lead">Create a bulk WhatsApp campaign and tie it to an approved template and an uploaded recipient CSV. Setting <code>is_drafted: false</code> immediately triggers backend preprocessing — the platform downloads the CSV, validates all phone numbers, removes duplicates and blocked contacts, and prepares the campaign for dispatch.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-post">POST</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/save-campaign</span>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠</span>
+    <span>Pass the <strong>complete template object</strong> returned by <code>GET /templates</code> as the <code>template_data</code> field. This must include <code>id</code>, <code>bsp_metadata</code>, <code>bsp_template_id</code>, and <code>content</code>. Passing only the template ID or a partial object will cause preprocessing to fail.</span>
+  </div>
+
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your OCMP account UUID.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Must be <code>"waba"</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your WABA phone number with country code, without <code>+</code>.</div><div class="param-example">919912341590</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">bsp_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your BSP UUID.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">campaign_name</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Human-readable campaign name shown in the OCMP dashboard.</div><div class="param-example">Q4 Flash Sale 2024</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">created_by</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Name of the user or service creating the campaign. Recorded in the audit log visible in the dashboard.</div><div class="param-example">John Doe</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">template_data</span><span class="param-type">object</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right">
+        <div class="param-desc">The full template object as returned by <code>GET /templates</code>. Must include all fields: <code>id</code>, <code>account_id</code>, <code>bsp_id</code>, <code>waba_number</code>, <code>template_name</code>, <code>category</code>, <code>type</code>, <code>status</code>, <code>content</code>, <code>bsp_metadata</code>, <code>bsp_template_id</code>.</div>
+        <div class="param-children" style="margin-top:6px">Only use templates with <code>status: "APPROVED"</code>. Templates in any other state will cause the campaign to fail during preprocessing without a clear error message.</div>
+      </div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">bulk_upload_url</span><span class="param-type">string · url</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">The URL of the uploaded recipient CSV returned by <code>POST /drive/upload</code>. The platform downloads this file during preprocessing.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">is_bulk_campaign</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Must be <code>true</code> for CSV-based bulk campaigns.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">is_drafted</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc"><code>false</code> — submit immediately, begins preprocessing. <code>true</code> — save as an editable draft, preprocessing does not start.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">country_code</span><span class="param-type">string · nullable</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Default country dialling code for numbers in the CSV that don't already include one. Pass <code>null</code> when all numbers are in full international format.</div><div class="param-example">+91</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">template_category</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right">
+        <div class="param-desc">Classification used for dashboard filtering only. Has no effect on delivery.</div>
+        <div class="param-enum"><div class="enum-label">Allowed values</div><div class="enum-values"><span class="enum-val">marketing</span><span class="enum-val">utility</span><span class="enum-val">authentication</span></div></div>
+      </div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">campaign_category</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Internal classification for your own reporting. No effect on delivery.</div><div class="param-enum"><div class="enum-label">Allowed values</div><div class="enum-values"><span class="enum-val">promotional</span><span class="enum-val">transactional</span></div></div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">tags</span><span class="param-type">string[]</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Labels for grouping campaigns in the dashboard. No effect on delivery or targeting.</div><div class="param-example">["q4", "promo"]</div></div>
+    </div>
+
+  </div>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Campaign created. The response body contains the campaign <code>id</code> — store this for polling preprocessing status and triggering dispatch.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Missing or invalid fields. Common causes: incomplete <code>template_data</code>, inaccessible <code>bulk_upload_url</code>, wrong data type.</span></div>
+    <div class="response-row"><span class="response-code rc-4">401</span><span class="response-desc">Token expired or missing.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL</div>
+      <div class="ctab" onclick="ct(this)">Node.js</div>
+      <div class="ctab" onclick="ct(this)">Python</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/save-campaign'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "da5a9881-f858-49a5-ad3f-96d1e620f91d",
+    "channel": "waba",
+    "waba_number": "919912341590",
+    "bsp_id": "74a0b6fa-4540-4a47-9008-ef10818b8eb6",
+    "campaign_name": "Q4 Flash Sale 2024",
+    "created_by": "John Doe",
+    "tags": ["q4", "promo"],
+    "template_category": "marketing",
+    "campaign_category": "promotional",
+    "template_data": { /* full object from GET /templates */ },
+    "is_drafted": false,
+    "is_bulk_campaign": true,
+    "country_code": null,
+    "bulk_upload_url": "https://ocmp.smartping.io/backend/api/drive/uploads/.../recipients.csv"
+  }'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="cm">// 'approved' is the full template object from GET /templates</span>
+<span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">'…/campaign/save-campaign'</span>, {
+  method: <span class="s">'POST'</span>,
+  headers: { Authorization: <span class="s">`Bearer <span class="k">${token}</span>`</span>, <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span> },
+  body: JSON.stringify({
+    account_id: accountId, channel: <span class="s">'waba'</span>,
+    waba_number: wabaNumber, bsp_id: bspId,
+    campaign_name: <span class="s">'Q4 Flash Sale 2024'</span>,
+    created_by: <span class="s">'My Service'</span>,
+    template_data: approved,   <span class="cm">// ← full object, not just ID</span>
+    bulk_upload_url: csvUrl,
+    is_drafted: <span class="k">false</span>, is_bulk_campaign: <span class="k">true</span>, country_code: <span class="k">null</span>
+  })
+});
+<span class="k">const</span> { id: campaignId } = <span class="k">await</span> res.json();</pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>r = requests.post(
+    <span class="s">'…/campaign/save-campaign'</span>,
+    headers={<span class="s">'Authorization'</span>: f<span class="s">'Bearer {token}'</span>},
+    json={
+        <span class="s">'account_id'</span>: account_id, <span class="s">'channel'</span>: <span class="s">'waba'</span>,
+        <span class="s">'waba_number'</span>: waba_number, <span class="s">'bsp_id'</span>: bsp_id,
+        <span class="s">'campaign_name'</span>: <span class="s">'Q4 Flash Sale 2024'</span>,
+        <span class="s">'created_by'</span>: <span class="s">'My Service'</span>,
+        <span class="s">'template_data'</span>: approved_template,
+        <span class="s">'bulk_upload_url'</span>: csv_url,
+        <span class="s">'is_drafted'</span>: <span class="k">False</span>, <span class="s">'is_bulk_campaign'</span>: <span class="k">True</span>,
+        <span class="s">'country_code'</span>: <span class="k">None</span>
+    }
+)
+campaign_id = r.json()[<span class="s">'id'</span>]</pre></div>
+  </div>
+</section>
+
+<!-- ══════════════════ SEND CAMPAIGN ══════════════════ -->
+<section class="page" id="ep-send">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-post">POST</span>
+    <span class="eyebrow-path">/campaign/send-campaign</span>
+  </div>
+  <h1>Send Campaign</h1>
+  <p class="lead">Trigger the dispatch of a preprocessed bulk campaign. Call this after polling <code>GET /campaign/{campaign_id}</code> and confirming the status is <code>VALIDATED</code>. Once called, messages begin reaching recipients immediately.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-post">POST</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-campaign</span>
+  </div>
+
+  <div class="callout callout-danger">
+    <span class="callout-icon">🚫</span>
+    <span><strong>Irreversible.</strong> Calling this endpoint dispatches messages to Meta's WhatsApp API immediately. There is no pause or cancel. Always test with a small recipient list before sending to your full audience.</span>
+  </div>
+
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">The campaign UUID returned when the campaign was created with <code>POST /campaign/save-campaign</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">bulk_upload_url</span><span class="param-type">string · url</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">The recipient CSV URL. Must be the same URL used when the campaign was saved.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">is_send_to_non_consent_recipients</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right">
+        <div class="param-desc"><code>false</code> — send only to numbers that have a registered opt-in consent record in the platform. <code>true</code> — send to all numbers in the CSV regardless of consent status.</div>
+        <div class="param-children" style="margin-top:6px">Use <code>false</code> in production unless you manage consent entirely outside the platform. Sending to non-consented numbers may violate WhatsApp's Business Policy and can trigger account restrictions or bans.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Campaign queued for dispatch. Monitor progress with <code>GET /campaign/{campaign_id}</code> — status moves from <code>SENDING</code> to <code>COMPLETED</code>.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Campaign not yet preprocessed (status is not <code>VALIDATED</code>), or malformed payload.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Campaign not found in this account's scope.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL</div>
+      <div class="ctab" onclick="ct(this)">Response 200</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-campaign'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "id": "9af51935-cc3b-4bc0-8bc6-4a7bc86827c2",
+    "bulk_upload_url": "https://ocmp.smartping.io/backend/api/drive/uploads/.../recipients.csv",
+    "is_send_to_non_consent_recipients": false
+  }'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{ <span class="n">"status"</span>: <span class="s">"SENDING"</span>, <span class="n">"message"</span>: <span class="s">"Campaign queued for dispatch"</span> }</pre></div>
+  </div>
+</section>
+
+<!-- ══════════════════ SEND SINGLE ══════════════════ -->
+<section class="page" id="ep-single">
+  <div class="page-eyebrow">
+    <span class="eyebrow-method em-post">POST</span>
+    <span class="eyebrow-path">/campaign/send-single-campaign-by-template-name</span>
+  </div>
+  <h1>Send Single Message by Template Name</h1>
+  <p class="lead">Send one WhatsApp message to a single recipient without any CSV upload, save step, or preprocessing. Dispatches synchronously using just a template name. This endpoint is API-only and does not appear in the OCMP dashboard GUI — it is designed for server-side integrations where messages are triggered by application events.</p>
+
+  <div class="endpoint-box">
+    <span class="endpoint-method eb-post">POST</span>
+    <span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-single-campaign-by-template-name</span>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-icon">★</span>
+    <span>Use this for transactional one-to-one messages: order confirmations, shipping updates, OTPs, appointment reminders. For sending to 50 or more recipients, use the bulk campaign flow — it is more efficient and provides better delivery tracking.</span>
+  </div>
+
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your OCMP account UUID.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Must be <code>"waba"</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Your WABA sender number with country code, without <code>+</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">template_name</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Exact name of an approved template. Case-sensitive. Must match the name in Meta Business Manager exactly. Passing a pending or rejected template name returns a <code>404</code>.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">mobile_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Recipient's phone number in full international format, without <code>+</code>.</div><div class="param-example">919876543210</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">template_variables</span><span class="param-type">object</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right">
+        <div class="param-desc">Dynamic values to substitute into template placeholders. Contains three child objects, each a key-value map where keys are variable numbers as strings and values are the substitution text.</div>
+        <div class="param-children">
+          <strong>header.variables</strong> — for <code>{{1}}</code>…<code>{{n}}</code> in the header<br>
+          <strong>body.variables</strong> — for <code>{{1}}</code>…<code>{{n}}</code> in the body (most common)<br>
+          <strong>button.variables</strong> — for dynamic URL suffixes in call-to-action buttons<br><br>
+          Example for body text <em>"Hi {{1}}, your order {{2}} is ready"</em>:<br>
+          <code style="font-size:11px">body.variables: { "1": "Rahul", "2": "ORD-9182" }</code>
+        </div>
+      </div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">is_bulk_campaign</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div>
+      <div class="param-right"><div class="param-desc">Must be <code>false</code> for single-recipient sends.</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">country_code</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Country dialling code to prepend if <code>mobile_number</code> doesn't already include one.</div><div class="param-example">91</div></div>
+    </div>
+    <div class="param-row">
+      <div class="param-left"><span class="param-name">tags</span><span class="param-type">string[]</span><div class="param-badges"><span class="badge-opt">optional</span></div></div>
+      <div class="param-right"><div class="param-desc">Labels for grouping this message in analytics.</div></div>
+    </div>
+  </div>
+
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Message accepted. Returns a <code>message_id</code> you can use with <code>GET /analytics/view-analytics-by-message-id</code> to track delivery.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Missing required fields or invalid phone number format.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Template not found or not approved for this WABA. Verify the template name and its approval status.</span></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-tabs">
+      <div class="ctab on" onclick="ct(this)">cURL</div>
+      <div class="ctab" onclick="ct(this)">Node.js</div>
+      <div class="ctab" onclick="ct(this)">Python</div>
+    </div>
+    <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-single-campaign-by-template-name'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "channel": "waba",
+    "waba_number": "919912341590",
+    "template_name": "order_shipped_v1",
+    "mobile_number": "919876543210",
+    "country_code": "91",
+    "is_bulk_campaign": false,
+    "template_variables": {
+      "body": {
+        "variables": { "1": "Rahul", "2": "ORD-9182", "3": "Dec 22" }
+      }
+    }
+  }'</span></pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">'…/send-single-campaign-by-template-name'</span>, {
+  method: <span class="s">'POST'</span>,
+  headers: { Authorization: <span class="s">`Bearer <span class="k">${token}</span>`</span>, <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span> },
+  body: JSON.stringify({
+    account_id: accountId, channel: <span class="s">'waba'</span>,
+    waba_number: wabaNumber,
+    template_name: <span class="s">'order_shipped_v1'</span>,
+    mobile_number: user.phone,
+    is_bulk_campaign: <span class="k">false</span>,
+    template_variables: {
+      body: { variables: { <span class="s">'1'</span>: user.name, <span class="s">'2'</span>: order.id, <span class="s">'3'</span>: order.eta } }
+    }
+  })
+});
+<span class="k">const</span> { message_id } = <span class="k">await</span> res.json();</pre></div>
+    <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>r = requests.post(
+    <span class="s">'…/send-single-campaign-by-template-name'</span>,
+    headers={<span class="s">'Authorization'</span>: f<span class="s">'Bearer {token}'</span>},
+    json={
+        <span class="s">'account_id'</span>: account_id, <span class="s">'channel'</span>: <span class="s">'waba'</span>,
+        <span class="s">'waba_number'</span>: waba_number,
+        <span class="s">'template_name'</span>: <span class="s">'order_shipped_v1'</span>,
+        <span class="s">'mobile_number'</span>: user[<span class="s">'phone'</span>],
+        <span class="s">'is_bulk_campaign'</span>: <span class="k">False</span>,
+        <span class="s">'template_variables'</span>: {
+            <span class="s">'body'</span>: {<span class="s">'variables'</span>: {<span class="s">'1'</span>: user[<span class="s">'name'</span>], <span class="s">'2'</span>: order_id}}
+        }
+    }
+)
+message_id = r.json()[<span class="s">'message_id'</span>]</pre></div>
+  </div>
+</section>
+
+<!-- Remaining endpoints — condensed but complete -->
+
+<section class="page" id="ep-bulk">
+  <div class="page-eyebrow"><span class="eyebrow-method em-post">POST</span><span class="eyebrow-path">/campaign/send-bulk-campaign-by-template-name</span></div>
+  <h1>Send Bulk Campaign by Template Name</h1>
+  <p class="lead">Send a bulk campaign using only a template name — skipping the full save/preprocess flow. Useful when you need a quick dispatch without tracking preprocessing state. <em>API-only — not shown in the dashboard GUI.</em></p>
+  <div class="endpoint-box"><span class="endpoint-method eb-post">POST</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/send-bulk-campaign-by-template-name</span></div>
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Your OCMP account UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Must be <code>"waba"</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">WABA sender number with country code, without <code>+</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">template_name</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Exact name of an approved template. Case-sensitive.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">bulk_upload_url</span><span class="param-type">string · url</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">URL of the uploaded recipient CSV from <code>POST /drive/upload</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">is_bulk_campaign</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Must be <code>true</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">is_send_to_non_consent_recipients</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Whether to include numbers without a registered opt-in. See the <a href="#ep-send">Send Campaign</a> endpoint for guidance on this flag.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">template_variables</span><span class="param-type">object</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Dynamic variable values for template placeholders. Same structure as the single-send endpoint.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">country_code</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Default dialling code for numbers without one in the CSV.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">tags</span><span class="param-type">string[]</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Labels for analytics grouping.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Campaign queued. Returns a <code>request_id</code> for tracking via <code>GET /campaign/track-request/{request_id}</code>.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Missing fields or invalid template name.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'…/campaign/send-bulk-campaign-by-template-name'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "account_id": "3fa85f64-…",
+    "channel": "waba",
+    "waba_number": "919912341590",
+    "template_name": "flash_sale_banner_v1",
+    "bulk_upload_url": "https://…/recipients.csv",
+    "is_bulk_campaign": true,
+    "is_send_to_non_consent_recipients": false
+  }'</span></pre></div></div>
+</section>
+
+<section class="page" id="ep-update">
+  <div class="page-eyebrow"><span class="eyebrow-method em-put">PUT</span><span class="eyebrow-path">/campaign/update-campaign</span></div>
+  <h1>Update Campaign</h1>
+  <p class="lead">Update an existing campaign's fields. Primarily used to replace or remove the recipient CSV file before the campaign has been dispatched.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-put">PUT</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/update-campaign</span></div>
+  <h3>Request body · application/json</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">The campaign UUID to update.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Your OCMP account UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">WABA sender number.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">bulk_upload_url</span><span class="param-type">string | null</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">New CSV URL to replace the current one. Pass <code>null</code> to remove the reference entirely.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">is_bulk_file_deleted</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Set <code>true</code> to explicitly mark the current file reference as deleted.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Campaign updated successfully.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Campaign not found.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X PUT <span class="u">'…/campaign/update-campaign'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{
+    "id": "445f111b-3f1d-4cee-abf1-6ad63ada13f5",
+    "account_id": "da5a9881-…",
+    "waba_number": "919912341590",
+    "bulk_upload_url": null,
+    "is_bulk_file_deleted": true
+  }'</span></pre></div></div>
+</section>
+
+<section class="page" id="ep-list">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/campaign/{account_id}/{channel}/{bsp_id}/{waba_number}</span></div>
+  <h1>List All Campaigns</h1>
+  <p class="lead">Returns a paginated list of all campaigns for a given WABA number. Filter by template category to narrow results.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/{account_id}/{channel}/{bsp_id}/{waba_number}</span></div>
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Your account UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Must be <code>waba</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">bsp_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Your BSP UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">waba_number</span><span class="param-type">string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">WABA number with country code.</div></div></div>
+  </div>
+  <h3>Query parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">page</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Page number. Default: <code>1</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">size</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Results per page. Default: <code>10</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">template_category</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Filter by <code>marketing</code>, <code>utility</code>, or <code>authentication</code>.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Paginated campaign list with status, names, and timestamps.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">No campaigns found for these parameters.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://…/campaign/da5a9881-.../waba/da5a9881-.../919912341590?page=1&size=20&template_category=marketing'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div></div>
+</section>
+
+<section class="page" id="ep-getbyid">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/campaign/{campaign_id}</span></div>
+  <h1>Get Campaign by ID</h1>
+  <p class="lead">Fetch full details and current status for a single campaign. Use this to poll preprocessing status after saving, and to confirm delivery completion after dispatch.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/{campaign_id}</span></div>
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">campaign_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">The campaign UUID returned when the campaign was created. Poll this endpoint after calling save-campaign — wait for <code>status: "VALIDATED"</code> before dispatching.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Full campaign object. Key field: <code>status</code>. Poll until <code>VALIDATED</code> before sending. After dispatch, poll until <code>COMPLETED</code>.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Campaign not found. IDs are account-scoped.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div><div class="ctab" onclick="ct(this)">Response 200</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/9af51935-cc3b-4bc0-8bc6-4a7bc86827c2'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"id"</span>: <span class="s">"9af51935-cc3b-4bc0-8bc6-4a7bc86827c2"</span>,
+  <span class="n">"campaign_name"</span>: <span class="s">"Q4 Flash Sale 2024"</span>,
+  <span class="n">"status"</span>: <span class="s">"COMPLETED"</span>,
+  <span class="n">"created_at"</span>: <span class="s">"2024-10-10T09:15:00Z"</span>,
+  <span class="n">"updated_at"</span>: <span class="s">"2024-10-10T09:42:13Z"</span>
+}</pre></div></div>
+</section>
+
+<section class="page" id="ep-track">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/campaign/track-request/{request_id}</span></div>
+  <h1>Track Campaign by Request ID</h1>
+  <p class="lead">Track a campaign send operation using the <code>request_id</code> returned when dispatch was triggered. Provides per-request granularity as opposed to the campaign-level tracking provided by the campaign ID.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/track-request/{request_id}</span></div>
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">request_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">The request UUID issued when the campaign send was triggered via <code>POST /campaign/send-campaign</code>.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Status and metadata for the send request.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Request ID not found.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://…/campaign/track-request/b2fa2d9c-ff70-47a1-a84a-ecc0c9886267'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div></div>
+</section>
+
+<section class="page" id="ep-health">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/campaign/health</span></div>
+  <h1>Health Check</h1>
+  <p class="lead">Returns the operational status of the campaign service. No authentication required. Safe for uptime monitors, load balancers, and status dashboards. Also useful to confirm the service is available before triggering a campaign dispatch, and to poll after a <code>503</code> error to determine when to resume.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/campaign/health</span></div>
+  <div class="callout callout-info"><span class="callout-icon">ℹ</span><span>No parameters. No request body. No <code>Authorization</code> header needed. Returns <code>200</code> when healthy, <code>503</code> when the service is temporarily unavailable.</span></div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Service is healthy and accepting requests.</span></div>
+    <div class="response-row"><span class="response-code rc-5">503</span><span class="response-desc">Service temporarily unavailable. Retry after a delay.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="cm"># No auth required</span>
+curl <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/campaign/health'</span></pre></div></div>
+</section>
+
+<!-- ══════════════════ ANALYTICS ══════════════════ -->
+<section class="page" id="ep-a-msg">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/analytics/view-analytics-by-message-id/{message_id}</span></div>
+  <h1>Message Status by ID</h1>
+  <p class="lead">Fetch the delivery and read status of a specific WhatsApp message using its unique message ID. Use this for per-message tracking in transactional flows — for example, to confirm an OTP or order notification was delivered before taking a downstream action.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/analytics/view-analytics-by-message-id/{message_id}</span></div>
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">message_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">The message UUID returned in the response when the message was sent via the single-send or bulk endpoint.</div><div class="param-example">b2fa2d9c-ff70-47a1-a84a-ecc0c9886267</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Message analytics including <code>status</code> (<code>sent</code>, <code>delivered</code>, <code>read</code>, <code>failed</code>) and timestamps for each state transition.</span></div>
+    <div class="response-row"><span class="response-code rc-4">404</span><span class="response-desc">Message ID not found.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div><div class="ctab" onclick="ct(this)">Response 200</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://…/analytics/view-analytics-by-message-id/b2fa2d9c-ff70-47a1-a84a-ecc0c9886267'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"message_id"</span>: <span class="s">"b2fa2d9c-ff70-47a1-a84a-ecc0c9886267"</span>,
+  <span class="n">"status"</span>: <span class="s">"read"</span>,
+  <span class="n">"sent_at"</span>: <span class="s">"2025-01-15T10:05:00Z"</span>,
+  <span class="n">"delivered_at"</span>: <span class="s">"2025-01-15T10:05:03Z"</span>,
+  <span class="n">"read_at"</span>: <span class="s">"2025-01-15T10:07:21Z"</span>
+}</pre></div></div>
+</section>
+
+<section class="page" id="ep-a-camp">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/analytics/view-analytics/{account_id}</span></div>
+  <h1>Campaign Analytics</h1>
+  <p class="lead">Retrieve delivery analytics for all campaigns under an account. Optionally filter to a specific campaign to get its individual stats.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/analytics/view-analytics/{account_id}</span></div>
+  <h3>Path parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Your account UUID.</div></div></div>
+  </div>
+  <h3>Query parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">campaign_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Filter results to a specific campaign. Omit to get data across all campaigns.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Campaign analytics including sent, delivered, read, and failed counts per campaign.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://…/analytics/view-analytics/b2fa2d9c-…?campaign_id=9af51935-…'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div></div>
+</section>
+
+<section class="page" id="ep-a-all">
+  <div class="page-eyebrow"><span class="eyebrow-method em-get">GET</span><span class="eyebrow-path">/analytics/view-all-metrics-analytics</span></div>
+  <h1>Metrics with Date Range</h1>
+  <p class="lead">Fetch aggregate delivery metrics — sent, delivered, read, failed — for a WABA number across a specified date range. Designed for dashboards and scheduled reporting.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-get">GET</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/analytics/view-all-metrics-analytics</span></div>
+  <h3>Query parameters</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string · uuid</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Filter to a specific account.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">waba_number</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Filter to a specific WABA phone number.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">start_date</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Start of date range. Format: <code>YYYY-MM-DD</code>.</div><div class="param-example">2025-01-15</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">end_date</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">End of date range (inclusive). Format: <code>YYYY-MM-DD</code>.</div><div class="param-example">2025-01-22</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Aggregate metrics for the specified period, including delivery rate and read rate.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div><div class="ctab" onclick="ct(this)">Response 200</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl <span class="u">'https://…/analytics/view-all-metrics-analytics?account_id=0b28561d-…&waba_number=919912341590&start_date=2025-01-01&end_date=2025-01-31'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"period"</span>: { <span class="n">"start"</span>: <span class="s">"2025-01-01"</span>, <span class="n">"end"</span>: <span class="s">"2025-01-31"</span> },
+  <span class="n">"sent"</span>: <span class="v">87400</span>,
+  <span class="n">"delivered"</span>: <span class="v">83100</span>,
+  <span class="n">"read"</span>: <span class="v">61200</span>,
+  <span class="n">"failed"</span>: <span class="v">4300</span>,
+  <span class="n">"delivery_rate"</span>: <span class="s">"95.1%"</span>,
+  <span class="n">"read_rate"</span>: <span class="s">"70.0%"</span>
+}</pre></div></div>
+</section>
+
+<!-- ══════════════════ UPLOAD ══════════════════ -->
+<section class="page" id="ep-upload">
+  <div class="page-eyebrow"><span class="eyebrow-method em-post">POST</span><span class="eyebrow-path">/drive/upload</span></div>
+  <h1>Upload File</h1>
+  <p class="lead">Upload a file to the SmartPing drive and receive a hosted URL back. You'll use this URL as <code>bulk_upload_url</code> in campaign payloads, or as a media URL in template headers. Accepts CSVs, images, videos, and documents.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-post">POST</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/drive/upload</span></div>
+  <div class="callout callout-info"><span class="callout-icon">ℹ</span><span>This endpoint uses <code>multipart/form-data</code> encoding — not JSON. Use <code>-F</code> in cURL or <code>FormData</code> in JavaScript. For recipient CSVs, each row should be a phone number in full international format without <code>+</code>.</span></div>
+  <h3>Form fields · multipart/form-data</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">file</span><span class="param-type">binary</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">The file to upload. For bulk campaigns: a CSV where each row is a full international phone number without <code>+</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Your account UUID. Scopes the file to your account in the drive.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Channel identifier. Use <code>waba</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">created_by</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Creator name or service identifier for audit logs.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">mobile_number</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Associate the uploaded file with a specific phone number (for media files).</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">is_active</span><span class="param-type">boolean</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Whether the file is active. Defaults to <code>true</code>.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">File uploaded. The <code>url</code> field in the response is what you pass as <code>bulk_upload_url</code> in campaign payloads.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Invalid file format or missing required form fields.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL</div><div class="ctab" onclick="ct(this)">Node.js</div><div class="ctab" onclick="ct(this)">Response 200</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/drive/upload'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -F <span class="s">'file=@/path/to/recipients.csv'</span> \
+  -F <span class="s">'account_id=2ad53edc-7f14-4a23-b2dc-381fa3a21ead'</span> \
+  -F <span class="s">'channel=waba'</span> \
+  -F <span class="s">'created_by=My App'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre><span class="k">import</span> FormData <span class="k">from</span> <span class="s">'form-data'</span>;
+<span class="k">import</span> fs <span class="k">from</span> <span class="s">'fs'</span>;
+
+<span class="k">const</span> form = <span class="k">new</span> FormData();
+form.append(<span class="s">'file'</span>, fs.createReadStream(<span class="s">'./recipients.csv'</span>));
+form.append(<span class="s">'account_id'</span>, accountId);
+form.append(<span class="s">'channel'</span>, <span class="s">'waba'</span>);
+form.append(<span class="s">'created_by'</span>, <span class="s">'My Service'</span>);
+
+<span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">'…/drive/upload'</span>, {
+  method: <span class="s">'POST'</span>,
+  headers: { Authorization: <span class="s">`Bearer <span class="k">${token}</span>`</span>, ...form.getHeaders() },
+  body: form
+});
+<span class="k">const</span> { url } = <span class="k">await</span> res.json();
+<span class="cm">// pass 'url' as bulk_upload_url in save-campaign</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"url"</span>: <span class="s">"https://ocmp.smartping.io/backend/api/drive/uploads/2ad53edc-.../recipients.csv"</span>,
+  <span class="n">"file_name"</span>: <span class="s">"recipients.csv"</span>,
+  <span class="n">"size_bytes"</span>: <span class="v">48200</span>,
+  <span class="n">"uploaded_at"</span>: <span class="s">"2025-01-15T09:00:00Z"</span>
+}</pre></div></div>
+</section>
+
+<!-- ══════════════════ CONSENT ══════════════════ -->
+<section class="page" id="ep-consent">
+  <div class="page-eyebrow"><span class="eyebrow-method em-post">POST</span><span class="eyebrow-path">/consents/consent</span></div>
+  <h1>Bulk Optin / Blocklist Upload</h1>
+  <p class="lead">Upload a CSV of phone numbers to register them as opted-in recipients or to add them to the blocklist. Pass <code>consent_status: "optin"</code> to register consent, or <code>"blocklist"</code> to prevent future messages from being delivered to those numbers.</p>
+  <div class="endpoint-box"><span class="endpoint-method eb-post">POST</span><span class="endpoint-path">https://ocmpapi.sparc.smartping.io/backend/api/consents/consent</span></div>
+  <div class="callout callout-info"><span class="callout-icon">ℹ</span><span>Uses <code>multipart/form-data</code> encoding. The CSV should contain one phone number per row in full international format without <code>+</code>. Numbers already in the target state are silently skipped.</span></div>
+  <h3>Form fields · multipart/form-data</h3>
+  <div class="param-block">
+    <div class="param-row"><div class="param-left"><span class="param-name">file</span><span class="param-type">binary</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">CSV file with phone numbers — one per row, full international format, no <code>+</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">consent_status</span><span class="param-type">enum · string</span><div class="param-badges"><span class="badge-req">required</span></div></div><div class="param-right"><div class="param-desc">Action to apply to all numbers in the file.</div><div class="param-enum"><div class="enum-label">Allowed values</div><div class="enum-values"><span class="enum-val">optin</span><span class="enum-val">blocklist</span></div></div><div class="param-children" style="margin-top:6px"><strong>optin</strong> — register numbers as opted in, enabling them to receive marketing messages.<br><strong>blocklist</strong> — block numbers from receiving any future messages from this WABA.</div></div></div>
+    </div>
+    <div class="param-row"><div class="param-left"><span class="param-name">account_id</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Your account UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">waba_number</span><span class="param-type">integer</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">WABA number the consent applies to.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">bsp_id</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Your BSP UUID.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">channel</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Use <code>waba</code>.</div></div></div>
+    <div class="param-row"><div class="param-left"><span class="param-name">created_by</span><span class="param-type">string</span><div class="param-badges"><span class="badge-opt">optional</span></div></div><div class="param-right"><div class="param-desc">Creator identifier for audit logs.</div></div></div>
+  </div>
+  <h3>Responses</h3>
+  <div class="response-block">
+    <div class="response-row"><span class="response-code rc-ok">200</span><span class="response-desc">Upload processed. Returns count of numbers registered or blocked, plus any skipped records with reasons.</span></div>
+    <div class="response-row"><span class="response-code rc-4">400</span><span class="response-desc">Invalid <code>consent_status</code> value or malformed CSV file.</span></div>
+  </div>
+  <div class="code-wrap"><div class="code-tabs"><div class="ctab on" onclick="ct(this)">cURL · optin</div><div class="ctab" onclick="ct(this)">cURL · blocklist</div><div class="ctab" onclick="ct(this)">Response 200</div></div>
+  <div class="cpanel on"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/consents/consent'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -F <span class="s">'file=@opted_in_users.csv'</span> \
+  -F <span class="s">'consent_status=optin'</span> \
+  -F <span class="s">'account_id=2ad53edc-…'</span> \
+  -F <span class="s">'waba_number=919912341572'</span> \
+  -F <span class="s">'channel=waba'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>curl -X POST <span class="u">'https://ocmpapi.sparc.smartping.io/backend/api/consents/consent'</span> \
+  -H <span class="s">'Authorization: Bearer &lt;token&gt;'</span> \
+  -F <span class="s">'file=@blocklist.csv'</span> \
+  -F <span class="s">'consent_status=blocklist'</span> \
+  -F <span class="s">'account_id=2ad53edc-…'</span> \
+  -F <span class="s">'waba_number=919912341572'</span></pre></div>
+  <div class="cpanel"><button class="cbtn" onclick="cp(this)">copy</button><pre>{
+  <span class="n">"success"</span>: <span class="k">true</span>,
+  <span class="n">"consent_status"</span>: <span class="s">"optin"</span>,
+  <span class="n">"processed"</span>: <span class="v">4500</span>,
+  <span class="n">"skipped"</span>: <span class="v">12</span>,
+  <span class="n">"skip_reason"</span>: <span class="s">"invalid_format"</span>
+}</pre></div></div>
+</section>
+
+<!-- ══════════════════ LIFECYCLE ══════════════════ -->
+<section class="page" id="lifecycle">
+  <h1>Campaign Lifecycle</h1>
+  <p class="lead">Every bulk campaign moves through a defined sequence of states from creation to delivery completion. Understanding each state tells you which API call to make next and how to recover when something goes wrong.</p>
+
+  <h2>State transitions</h2>
+  <div class="lc">
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#7C3AED;background:#EDE9FE"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">DRAFT</div><div class="lc-how">via save-campaign with is_drafted: true</div><div class="lc-desc">Saved locally without triggering preprocessing. You can freely edit the template, replace the CSV, or change the campaign name. No background processing occurs.</div></div>
+    </div>
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#7C3AED;background:#EDE9FE"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">SAVED</div><div class="lc-how">via save-campaign with is_drafted: false</div><div class="lc-desc">Preprocessing queued. The platform begins downloading the recipient CSV. Monitor with <code>GET /campaign/{id}</code>.</div></div>
+    </div>
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#D97706;background:#FFFBEB"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">PREPROCESSING</div><div class="lc-how">automatic — triggered by SAVED</div><div class="lc-desc">Phone numbers being validated, deduplicated, and filtered. Blocked numbers and invalid formats are removed. Typically 30 seconds to 5 minutes depending on list size. Do not call send-campaign during this state.</div></div>
+    </div>
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#059669;background:#ECFDF5"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">VALIDATED</div><div class="lc-how">automatic — triggered by successful PREPROCESSING</div><div class="lc-desc">Recipient list is ready. The campaign will not dispatch until you explicitly call <code>POST /campaign/send-campaign</code>. This is your last opportunity to review before committing.</div></div>
+    </div>
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#2563EB;background:#EFF6FF"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">SENDING</div><div class="lc-how">via send-campaign</div><div class="lc-desc">Messages being dispatched to Meta's WhatsApp API. Monitor with <code>GET /campaign/{id}</code>.</div></div>
+    </div>
+    <div class="lc-item">
+      <div class="lc-gutter"><div class="lc-dot" style="border-color:#059669;background:#059669"></div><div class="lc-line"></div></div>
+      <div class="lc-content"><div class="lc-state">COMPLETED</div><div class="lc-how">automatic — terminal state</div><div class="lc-desc">All messages dispatched. Use the analytics endpoints to review delivery and read rates.</div></div>
+    </div>
+  </div>
+
+  <h2>Failure states</h2>
+  <div class="table-wrap"><table class="tbl">
+    <thead><tr><th>State</th><th>Cause</th><th>Recovery</th></tr></thead>
+    <tbody>
+      <tr><td><code style="color:var(--rtx)">PREPROCESSING_FAILED</code></td><td>CSV URL inaccessible, file malformed, or transient network error during download.</td><td>Fix the URL or file, then re-save with <code>is_drafted: false</code>. Contact support if the URL is correct and the error persists.</td></tr>
+      <tr><td><code style="color:var(--rtx)">SEND_FAILED</code></td><td>Infrastructure failure during message dispatch.</td><td>Re-call <code>POST /campaign/send-campaign</code> with the same campaign ID. Already-sent messages are not re-sent.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ══════════════════ ERRORS ══════════════════ -->
+<section class="page" id="errors">
+  <h1>Error Codes</h1>
+  <p class="lead">The WABA API uses standard HTTP status codes. Every error response includes a JSON body with a machine-readable <code>error</code> field and a human-readable <code>message</code>. Implement explicit handling for the codes below.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">⚠</span>
+    <span>For <code>401</code>: your token has expired. Re-authenticate immediately and retry the original request. In long-running processes, implement automatic token refresh — see <a href="#authentication">Authentication</a>.</span>
+  </div>
+
+  <div class="table-wrap" style="margin-top:20px"><table class="tbl">
+    <thead><tr><th style="width:60px">Code</th><th style="width:130px">Meaning</th><th>Description &amp; recommended action</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code style="color:var(--gtx)">200</code></td>
+        <td>OK</td>
+        <td>Request succeeded. Some operations return partial failure details inside a 200 response — for example, skipped consent records. Always check the response body.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--atx)">400</code></td>
+        <td>Bad Request</td>
+        <td>Missing required field or invalid value. Read the <code>message</code> field for specifics. Common causes: incomplete <code>template_data</code>, inaccessible <code>bulk_upload_url</code>, passing a string where a boolean is expected.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--atx)">401</code></td>
+        <td>Unauthorized</td>
+        <td>Token missing, expired, or malformed. Re-authenticate and retry. Check for extra whitespace around the token in the header value. See <a href="#authentication">Authentication</a>.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--atx)">404</code></td>
+        <td>Not Found</td>
+        <td>Resource not found within the scope of the authenticated account. IDs are account-scoped — a valid UUID from another account returns 404. Double-check the ID belongs to the correct account.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--atx)">409</code></td>
+        <td>Conflict</td>
+        <td>A resource with this identifier already exists. For templates: the template name is already taken for this WABA number, even if the original was rejected. Choose a different name.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--rtx)">500</code></td>
+        <td>Server Error</td>
+        <td>Unexpected platform error. Retry with exponential backoff starting at 30 seconds. If the error persists beyond 5 minutes, contact SmartPing support with your <code>campaign_id</code> and the exact timestamp.</td>
+      </tr>
+      <tr>
+        <td><code style="color:var(--rtx)">503</code></td>
+        <td>Unavailable</td>
+        <td>Campaign service temporarily offline. Do not retry send operations. Poll <code>GET /campaign/health</code> and resume only after it returns <code>200</code>.</td>
+      </tr>
+    </tbody>
+  </table></div>
+</section>
+
+</main>
+
+<script>
+// Tab switching
+function ct(tab) {
+  const tabs = tab.closest('.code-tabs');
+  const wrap = tab.closest('.code-wrap');
+  tabs.querySelectorAll('.ctab').forEach(t => t.classList.remove('on'));
+  wrap.querySelectorAll('.cpanel').forEach(p => p.classList.remove('on'));
+  tab.classList.add('on');
+  const idx = [...tabs.querySelectorAll('.ctab')].indexOf(tab);
+  wrap.querySelectorAll('.cpanel')[idx]?.classList.add('on');
+}
+
+// Copy from code panel
+function cp(btn) {
+  const pre = btn.closest('.cpanel').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText || pre.textContent);
+  btn.textContent = 'copied!';
+  setTimeout(() => btn.textContent = 'copy', 1800);
+}
+
+// Copy from single code block
+function copySingle(btn) {
+  const pre = btn.closest('.code-single').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText || pre.textContent);
+  btn.textContent = 'copied!';
+  setTimeout(() => btn.textContent = 'copy', 1800);
+}
+
+// Copy text
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text);
+  btn.textContent = 'copied!';
+  setTimeout(() => btn.textContent = 'copy', 1500);
+}
+
+// Smooth scroll
+function jump(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Nav links
+document.querySelectorAll('.nav-item[href]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const id = a.getAttribute('href').slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Scroll-spy
+const pages = document.querySelectorAll('.page[id]');
+const navItems = document.querySelectorAll('.nav-item[href]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navItems.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-15% 0px -70% 0px' });
+pages.forEach(p => obs.observe(p));
+
+// Search filter
+function filterNav(q) {
+  const v = q.toLowerCase();
+  navItems.forEach(a => {
+    a.style.display = (!v || a.textContent.toLowerCase().includes(v)) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
